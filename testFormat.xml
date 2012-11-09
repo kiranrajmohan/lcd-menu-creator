@@ -1,0 +1,124 @@
+<Inputs>
+	<Button name="up">
+		<P>UP_PIN</P>
+		<DDR>UP_DDR</DDR>
+		<PIN>UP_PORT</PIN>
+		<PORT>UP_OPORT</PORT>
+	</Button>
+
+	<Button name="down">
+		<P>DOWN_PIN</P>
+		<DDR>DOWN_DDR</DDR>
+		<PIN>DOWN_PORT</PIN>
+		<PORT>DOWN_OPORT</PORT>
+	</Button>
+
+	<Button name="left">
+		<P>LEFT_PIN</P>
+		<DDR>LFET_DDR</DDR>
+		<PIN>LEFT_PORT</PIN>
+		<PORT>LEFT_OPORT</PORT>
+	</Button>
+
+	<Button name="right">
+		<P>RIGHT_PIN</P>
+		<DDR>RIGHT_DDR</DDR>
+		<PIN>RIGHT_PORT</PIN>
+		<PORT>RIGHT_OPORT</PORT>
+	</Button>
+
+	<Button name="enter">
+		<P>ENTER_PIN</P>
+		<DDR>ENTER_DDR</DDR>
+		<PIN>ENTER_PORT</PIN>
+		<PORT>ENTER_OPORT</PORT>
+	</Button>
+
+	<Button name="back">
+		<P>ENTER_PIN</P>
+		<DDR>ENTER_DDR</DDR>
+		<PIN>ENTER_PORT</PIN>
+		<PORT>ENTER_OPORT</PORT>
+	</Button>
+</Inputs>
+
+<Custom>
+	<LineIndicator val="->" />
+</Custom>
+
+<Display>
+	<Page name="RunningDisplay">
+		<Line> 
+			<String>Now </String>
+			<Space num="2"/>
+			<Call>printDay( currentTime.day , </Pos>, </Line> )</Call>
+			<Call>printTime( currentTime.h, currentTime.min, currentTime.s, </Pos>, </Line>)</Call>
+		</Line>
+		<Line> 
+
+			<String>Next </String>
+			<Space num="2"/>
+
+			<UpdateIf cond="!mGlobals.newNextRing">
+				<Call>printDay( nextRing.day , </Pos>, </Line> )</Call>
+				<Call>printTime( nextRing.h, nextRing.m, nextRing.s, </Pos>, </Line>)</Call>
+				<Call>resetNewNextRing</Call>
+			</UpdateIf>
+		</Line>
+		<LIne>
+			<LineIndicator/>
+			<String>Show Menu</String>
+			<OnInput input="enter">
+				<Goto>MainMenu</Goto>
+			</OnInput>
+		</Line>
+	</Page>
+
+	<Page name="MainMenu">
+		<Line>
+			<LineIndicator/>
+			<String>Set Time</String>
+			<OnInput input="enter">
+				<Goto>SetTimeMenu</Goto>
+			</OnInput>
+		</Line>
+		<Line>
+			<LineIndicator/>
+			<String>Set Time Table</String>
+			<OnInput input="enter">
+				<Goto>SetTableMenu</Goto>
+			</OnInput>
+		</Line>
+		<Line>
+			<LineIndicator/>
+			<String>Pause</String>
+			<OnInput input="enter">
+				<Goto>PauseMenu</Goto>
+			</OnInput>
+		</Line>
+
+		<OnInput input="back">
+			<Goto>RunningDisplay</Goto>
+		</OnInput>
+	</Page>
+
+	<Page name="SetTimeMenu">
+		<Line>
+			<String>SetTimeMenu</String>
+		</Line>
+	</Page>
+
+	<Page name="SetTableMenu">
+		<Line>
+			<String>SetTableMenu</String>
+		</Line>
+	</Page>
+
+	<Page name="PauseMenu">
+		<Line>
+			<String>PauseMenu</String>
+		</Line>
+	</Page>
+
+
+</Display>
