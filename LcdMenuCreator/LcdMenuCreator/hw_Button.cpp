@@ -54,7 +54,7 @@ string hw_Button::isPressedChecker()
 
 void hw_Button::display(){
 	cout<<"Button\n------------------------------\n"
-		<<name<<endl
+		<<name()<<endl
 		<<P<<endl
 		<<DDR<<endl
 		<<PIN<<endl

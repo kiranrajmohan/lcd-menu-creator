@@ -2,7 +2,9 @@
 #include <iostream>
 #include <vector>
 
-#include "hw_Button.h";
+
+#include "hw_Button.h"
+#include "hw_Inputs.h"
 
 using namespace std;
 using namespace pugi;
@@ -16,10 +18,14 @@ int main()
 	std::cout << "Load result: " << result.description() << ", node name: " << doc.name() << std::endl;
 	std::cout << "Load result: " << result.description() << ", node name: " << doc.first_child().name() << std::endl;
 	
-	xml_node Inputs = doc.child("Inputs");
-	hw_Button b_up( Inputs.first_child() );
-	b_up.display();
+	
+	//xml_node Inputs = doc.child("Inputs");
+	hw_Inputs inputs( doc.child("Inputs") );
+	inputs.display();
+	//hw_Button b_up( Inputs.first_child() );
+	//b_up.display();
 
+	
 
 	int simply;
 	cin>>simply;
