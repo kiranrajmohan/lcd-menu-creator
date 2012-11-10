@@ -5,6 +5,7 @@
 
 #include "hw_Button.h"
 #include "hw_Inputs.h"
+#include "Line.h"
 
 using namespace std;
 using namespace pugi;
@@ -12,21 +13,21 @@ using namespace pugi;
 int main()
 {
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file("testFormat.xml");
+	pugi::xml_parse_result result = doc.load_file("testFormat.xml",parse_ws_pcdata_single);
 	
-	std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("Inputs").child("Button").attribute("name").value() << std::endl;
+	std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("Inputs").child("Button").child("P").first_child().type() << std::endl;
 	std::cout << "Load result: " << result.description() << ", node name: " << doc.name() << std::endl;
 	std::cout << "Load result: " << result.description() << ", node name: " << doc.first_child().name() << std::endl;
 	
-	
-	//xml_node Inputs = doc.child("Inputs");
-	hw_Inputs inputs( doc.child("Inputs") );
-	inputs.display();
-	//hw_Button b_up( Inputs.first_child() );
-	//b_up.display();
+	//hw_Inputs inputs( doc.child("Inputs") );
+	//inputs.display();
+
+	Line l( doc.child("Display").first_child().first_child(), 0);
+	l.display();
+
 
 	
-
 	int simply;
 	cin>>simply;
+
 }

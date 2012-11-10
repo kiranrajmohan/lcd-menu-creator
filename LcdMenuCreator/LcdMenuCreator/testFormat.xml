@@ -49,27 +49,29 @@
 	  </Button>
   </Inputs>
 
-  <Custom>
+  <Config>
 	  <LineIndicator val="->" />
-  </Custom>
+    <maxLine>4</maxLine>
+    <maxChar>20</maxChar>
+  </Config>
 
   <Display>
 	  <Page name="RunningDisplay">
-		  <Line> 
-			  <String>Now </String>
-			  <Space num="2" />
-			  <Call>printDay( currentTime.day , <Pos/>, <Line/> )</Call>
-			  <Call>printTime( currentTime.h, currentTime.min, currentTime.s, <Pos/>, <Line/>)</Call>
+		  <Line>
+			  <String>Now   </String>
+			  <DisplayCall maxLength="3">printDay( currentTime.day , <Pos/>, <Line/> )</DisplayCall>
+        <String> </String>
+        <DisplayCall maxLength="8">printTime( currentTime.h, currentTime.min, currentTime.s, <Pos/>, <Line/>)</DisplayCall>
 		  </Line>
 		  <Line> 
 			  <String>Next </String>
-			  <Space num="2"/>
 
 			  <UpdateIf cond="!mGlobals.newNextRing">
-				  <Call>printDay( nextRing.day , <Pos/>, <Line/> )</Call>
-				  <Call>printTime( nextRing.h, nextRing.m, nextRing.s, <Pos/>, <Line/>)</Call>
+          <DisplayCall maxLength="3">printDay( nextRing.day , <Pos/>, <Line/> )</DisplayCall>
+          <DisplayCall maxLength="8">printTime( nextRing.h, nextRing.m, nextRing.s, <Pos/>, <Line/>)</DisplayCall>
 				  <Call>resetNewNextRing</Call>
-			  </UpdateIf>
+			  
+      </UpdateIf>
 		  </Line>
 		  <Line>
 			  <config>
