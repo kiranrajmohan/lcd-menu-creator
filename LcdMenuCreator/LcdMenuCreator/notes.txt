@@ -1,0 +1,5 @@
+<OnInput input="enter">
+			  <toggleNav/>    //stops/starts navManager from being called
+			  <toggleSideNav/>  //stops/starts left/right nav
+			  <toggleVerticalNav/>  //stops/starts up/down nav
+</OnInput>

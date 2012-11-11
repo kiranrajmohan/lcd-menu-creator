@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <bitset>
 
 using namespace std;
 using namespace pugi;
@@ -14,8 +15,19 @@ class Line
 		length;
 	vector<string> str;
 	vector<string> fCalls;
-	static const map<string,int> componentStringMap;
+	vector<string> conditions; //closing brackets are always inserted automatically
 	
+	bitset<2> configSelected;
+
+	static const map<string,int> componentStringMap;
+	static const map<string,int> configStringMap;
+	
+	enum _configOptions
+	{
+		TakesCursor=0,
+		LineIndicator
+	};
+
 	enum _componentStringIndex
 	{
 		String=0,
@@ -23,8 +35,12 @@ class Line
 		DisplayCall,
 		UpdateIf,
 		config,
-		OnInput
-	} componentStringIndex;
+		OnInput,
+		Goto
+	};
+
+	void manageNode(xml_node n);
+	string generateString( xml_node n);
 public:
 	Line(void);
 	Line( xml_node line ,int lineNo);
@@ -32,6 +48,7 @@ public:
 	void display();
 	~Line(void);
 
-	static map<string,int> createStringMap();
+	static map<string,int> createComponentStringMap();
+	static map<string,int> createConfigStringMap();
 };
 

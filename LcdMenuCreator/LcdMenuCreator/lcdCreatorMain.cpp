@@ -22,7 +22,7 @@ int main()
 	//hw_Inputs inputs( doc.child("Inputs") );
 	//inputs.display();
 
-	Line l( doc.child("Display").first_child().first_child(), 0);
+	Line l( doc.child("Display").first_child().first_child().next_sibling(), 0);
 	l.display();
 
 

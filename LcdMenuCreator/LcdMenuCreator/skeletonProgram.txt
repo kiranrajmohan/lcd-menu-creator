@@ -1,0 +1,207 @@
+void printLineIndicator(Li	neStatus &i)
+{
+	lcd_gotoxy(0,i.currentLine);
+	if( i.lineList[currentLine] == 1 ){
+		lcd_puts( <LineIndicator> ); //take from 
+}
+
+void navManager( LineStatus &i X)
+{
+	if( !i.navOn[0] && !i.navOn[1]){ //nav is off
+		return;  
+	}
+
+	
+	if( i.navOn[0] && horizPosInLine[currentLine]>1 ) //left/right nav is on & there are horiz pos's in this line
+	{
+		int curPosTemp=currentLine;
+
+		if( <right> )
+		{
+				if( currentPos < horizPosInLine[currentLine]-1 ){
+					currentPos++;
+				}else{
+					currentPos=0;
+				}
+		}else if( <left> ){
+			if( currentPos > 0  ){
+				currentPos--;
+			}else{
+				currentPos=horizPosInLine[currentLine]-1;
+			}
+		}
+	}
+
+	if( i.navOn[1] ) //up/down nav is on
+	{
+		int curLineTemp=currentLine;
+		if( <up> )
+		{
+			do{
+				if( currentLine < <MaxLines>-1 ){
+					currentLine++;
+				}else{
+					currentLine=0;
+				}
+			}while( lineCursorList[ currentLine ]==0 && currentLine!=curLineTemp ); //2nd condition to prevent infinite loops
+		}
+		else if( <down> )
+		{
+			do{
+				if( currentLine > 0 ){
+					currentLine--;
+				}else{
+					currentLine=<MaxLines> - 1;
+				}
+			}while( lineCursorList[ currentLine ]==0 && currentLine!=curLineTemp ); //Skip lines without cursor.2nd condition to prevent infinite loops
+		}
+	}
+
+}
+
+struct LineStatus{
+//for 20* 4 LCD, MaxLines=4;
+	int showCursor,
+		currentLine,
+		currentPosIndex,
+		lineCursorList[ <MaxLines> ]		//populated using <TakesCursor/>
+		lineIndicatorList[ <MaxLines> ],    //populated using <LineIndicator/>
+		lineStart[ <MaxLines> ],			//helps to leave space for line Indicator
+		navOn[2],							//navOn[0] -> left/right  navOn[1] -> up/down
+}
+
+/****** RunningDisplay **********/
+	LineStatus i={	off,  //default
+					2, 
+					2,				//lineStart[currentLine]
+					{0,0,1,0},		//populated using <TakesCursor/>
+					{0,0,1,0},
+					{0,0,2,0},		//2 because of lineIndicator (max length is 2)
+					{0,0}   //nav off because only 1 line
+				};
+	int totalHorizPos=0;  
+	/*
+		if nonzero
+		int horisPosInLine[3]={x,x,x,x},  //total num of positions in each line
+			horizPos[4][<largestNumInLine>]={
+												{y,y,y,y},
+												{y,y	},
+												{y,y,y	},
+												{y		}
+											}	
+	*/
+
+	//static text creation
+	lcd_gotxy(i.lineStart[0],0);
+	lcd_puts_P("Now   ");
+	lcd_gotxy(i.lineStart[1],1);
+	lcd_puts_P("Next  ");
+	lcd_gotoxy(i.lineStart[2],2);
+	lcd_puts_P(" Show Menu");
+
+	while(1)
+	{
+		//function calls. 
+		if(!mGlobals.newNextRing)
+		{	
+			printDay( nextRing.day , 6, 0 );
+			printTime( nextRing.h, nextRing.m, nextRing.s, 10, 0);
+			resetNewNextRing();
+		}
+		printDay( currentTime.day , 6, 1 )
+		printTime( currentTime.h, currentTime.min, currentTime.s, 10, 1)
+	
+		//manager functions
+		if(display.toUpdate){
+			printLineIndicator(i);
+		}
+
+		//Input managers
+		if( <enterPressed> )
+		{
+			LoadMenu(MainMenu); //use enums for the pageNames
+			return;
+		}
+	}
+/***************************************************/
+
+/****** MainMenu **********/
+	LineStatus i={	off,			//default
+					1, 
+					2,				//lineStart[currentLine]
+					{1,1,1,0}, 
+					{1,1,1,0},
+					{2,2,2,0},		//2 because of lineIndicator (max length is 2)
+					{0,1},				//horiz nav is 0 bcuz totalHorizPos==0
+				};
+	int totalHorizPos=0;
+	/******* Line 1 ************/
+
+	//static text creation (strings)
+	lcd_gotxy(i.lineStart[0],0);
+	lcd_puts_P("Set Time");
+	lcd_gotxy(i.lineStart[1],1);
+	lcd_puts_P("Set Time Table");
+	lcd_gotoxy(i.lineStart[2],2);
+	lcd_puts_P("Pause");
+
+	while(1)
+	{
+		//function calls. 
+		if(!mGlobals.newNextRing)
+		{	
+			printDay( nextRing.day , 6, 0 );
+			printTime( nextRing.h, nextRing.m, nextRing.s, 10, 0);
+			resetNewNextRing();
+		}
+		printDay( currentTime.day , 6, 1 )
+		printTime( currentTime.h, currentTime.min, currentTime.s, 10, 1)
+	
+		//Nav manager
+		navManager(i);
+
+		//manager functions
+		if(display.toUpdate){
+			printLineIndicator(i);
+		}
+
+		//Explicit Input managers
+		if( <backPressed> )
+		{
+			LoadMenu(RunningDisplay); //use enums for the pageNames
+			return;
+		}
+
+		if( i.currentLine==0 )
+		{
+			if( <enterPressed> )
+			{
+				LoadMenu(SetTimeMenu);
+				return;
+			}
+			
+		}
+
+		if( i.currentLine==1 )
+		{
+			if( <enterPressed> )
+			{
+				LoadMenu(SetTableMenu);
+				return;
+			}
+			
+		}
+
+		if( i.currentLine==2 )
+		{
+			if( <enterPressed> )
+			{
+				LoadMenu(PauseMenu);
+				return;
+			}
+			
+		}
+
+
+	}
+/***************************************************/

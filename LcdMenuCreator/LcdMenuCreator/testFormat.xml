@@ -50,7 +50,7 @@
   </Inputs>
 
   <Config>
-	  <LineIndicator val="->" />
+	  <LineIndicator default="*" active="->" />
     <maxLine>4</maxLine>
     <maxChar>20</maxChar>
   </Config>
@@ -69,17 +69,16 @@
 			  <UpdateIf cond="!mGlobals.newNextRing">
           <DisplayCall maxLength="3">printDay( nextRing.day , <Pos/>, <Line/> )</DisplayCall>
           <DisplayCall maxLength="8">printTime( nextRing.h, nextRing.m, nextRing.s, <Pos/>, <Line/>)</DisplayCall>
-				  <Call>resetNewNextRing</Call>
-			  
-      </UpdateIf>
+				  <Call>resetNewNextRing()</Call>
+        </UpdateIf>
 		  </Line>
 		  <Line>
 			  <config>
 				  <TakesCursor />
 				  <LineIndicator/>
 			  </config>
-
-			  <String>Show Menu</String>
+        
+			  <String> Show Menu</String>
 			  <OnInput input="enter">
 				  <Goto>MainMenu</Goto>
 			  </OnInput>
@@ -146,3 +145,4 @@
 
 
   </Display>
+
