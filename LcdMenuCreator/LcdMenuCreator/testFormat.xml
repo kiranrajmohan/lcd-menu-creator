@@ -51,7 +51,7 @@
 
   <Config>
 	  <LineIndicator default="*" active="->" />
-    <maxLine>4</maxLine>
+    <maxLines>4</maxLines>
     <maxChar>20</maxChar>
   </Config>
 

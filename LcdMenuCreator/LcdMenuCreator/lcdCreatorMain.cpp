@@ -6,6 +6,7 @@
 #include "hw_Button.h"
 #include "hw_Inputs.h"
 #include "Line.h"
+#include "ConfigManager.h"
 
 using namespace std;
 using namespace pugi;
@@ -21,6 +22,9 @@ int main()
 	
 	//hw_Inputs inputs( doc.child("Inputs") );
 	//inputs.display();
+
+	ConfigManager config( doc.child("Config") );
+	config.display();
 
 	Line l( doc.child("Display").first_child().first_child().next_sibling(), 0);
 	l.display();
