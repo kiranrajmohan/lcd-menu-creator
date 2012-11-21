@@ -74,9 +74,9 @@
 		  </Line>
 		  <Line>
 			  <config>
-				  <TakesCursor />
-				  <LineIndicator/>
-			  </config>
+          <LineIndicator/>
+          <TakesCursor/>
+        </config>
         
 			  <String> Show Menu</String>
 			  <OnInput input="enter">

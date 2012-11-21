@@ -9,11 +9,27 @@
 using namespace std;
 using namespace pugi;
 
+
 class Line
 {
+
+	struct stringStruct{
+		string s;
+		int pos;
+		stringStruct(){
+			s=string("");
+			pos=0;
+		}
+		stringStruct(string st,int p){
+			s=st;
+			pos=p;
+		}
+	};
+
+
 	int num,
 		length;
-	vector<string> str;
+	vector<stringStruct> str;
 	vector<string> fCalls;
 	vector<string> conditions; //closing brackets are always inserted automatically
 	

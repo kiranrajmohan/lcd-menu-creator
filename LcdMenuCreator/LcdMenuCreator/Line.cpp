@@ -23,7 +23,7 @@ map<string,int> Line::createConfigStringMap()
 }
 
 const map<string,int> Line::componentStringMap= Line::createComponentStringMap();
-const map<string,int> Line::configStringMap= Line::createComponentStringMap();
+const map<string,int> Line::configStringMap= Line::createConfigStringMap();
 
 Line::Line(void)
 {
@@ -31,7 +31,7 @@ Line::Line(void)
 
 Line::Line(xml_node line,int lineNo)
 {
-	str.push_back( string("") );
+	str.push_back( stringStruct() );
 	length=0;
 	num=lineNo;
 
@@ -47,28 +47,25 @@ void Line::manageNode(xml_node n)
 		switch( componentStringMap.find( n.name())->second  )
 		{
 		case String:
-			str.back().append(s);
+			str.back().s.append( s );
+			str.back().pos=length;
 			length+=s.length();
-			cout<<"String "<<length<<endl;
 			break;
 		case Call:
 			fCalls.push_back(s);
-			str.push_back( string("") ); //start a new string block
+			str.push_back( stringStruct()  ); //start a new string block
 			conditions.push_back( string("") );
-			cout<<"Call "<<endl;
 			break;
 		case DisplayCall:
 			fCalls.push_back(s);
-			str.push_back( string("") ); //start a new string block
+			str.push_back( stringStruct()  ); //start a new string block
 			conditions.push_back( string("") );
 			length+=atoi( n.attribute("maxLength").value() );
-			cout<<"DisplayCall "<<length<<endl;
 			break;
 		case UpdateIf:
 			conditions.push_back( s );
-			str.push_back( string("") ); 
+			str.push_back( stringStruct()  ); 
 			fCalls.push_back(string(""));
-			cout<<"------UpdateIf----------"<<endl<<s<<endl;
 			for( xml_node::iterator condChild=n.begin(); condChild!=n.end(); condChild++)
 			{
 				manageNode( *condChild );
@@ -77,7 +74,10 @@ void Line::manageNode(xml_node n)
 		case config:
 			for( xml_node::iterator confChild=n.begin(); confChild!=n.end(); confChild++)
 			{
-				configSelected.flip( componentStringMap.find( confChild->name())->second ); //flip the corresponding bit of the bitset
+
+				string str( confChild->name() );
+				int num = configStringMap.find( str )->second;
+				configSelected.flip( num ); //flip the corresponding bit of the bitset
 			}
 			break;
 		}
@@ -98,17 +98,13 @@ string Line::generateString( xml_node n)
 
 		case Call:
 		case DisplayCall:
-			cout<<"generate displayCall"<<endl;
 			for( xml_node::iterator callChildren=n.begin(); callChildren!=n.end(); ++callChildren)
 			{
 				if( callChildren->name() == string("Pos")){
-					cout<<" Pos "<<length;
 					s+=std::to_string( static_cast<long long>(length) );
 				}else if( callChildren->name() == string("Line" )){
-					cout<<" Line "<<num ;
 					s+=std::to_string( static_cast<long long>(num) );
 				}else if( callChildren->type() == node_pcdata ){
-					cout<<" val "<<callChildren->value();
 					s+=callChildren->value();
 				}
 			}
@@ -117,7 +113,6 @@ string Line::generateString( xml_node n)
 
 		case UpdateIf:
 			s+=string("if(") + n.attribute("cond").as_string() +string(")\n{");
-
 			break;
 
 
@@ -131,10 +126,10 @@ string Line::generateString( xml_node n)
 
 void Line::display()
 {
-	cout<<"\nline "<<num<< endl<<endl;
+	cout<<"\n------------------line "<<num<<"-------------------------"<< endl<<endl;
 	cout<<"**********str ************"<<str.size()<<endl ;
-	for(vector<string>::iterator it=str.begin(); it!=str.end(); ++it){
-		cout<<*it<<endl;
+	for(vector<stringStruct>::iterator it=str.begin(); it!=str.end(); ++it){
+		cout<<it->s<<"@"<<it->pos<<endl;
 	}
 	cout<<"**********fCalls ************"<<fCalls.size()<<endl ;
 	for(vector<string>::iterator it=fCalls.begin(); it!=fCalls.end(); ++it){
