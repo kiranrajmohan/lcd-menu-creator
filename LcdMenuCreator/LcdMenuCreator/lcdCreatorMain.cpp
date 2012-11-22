@@ -25,8 +25,11 @@ int main()
 	ConfigManager config( doc.child("Config") );
 	config.display();
 
-	PageCreator p( doc.child("Display").first_child() );
-	p.display();
+	PageCreator p0( doc.child("Display").first_child() );
+	p0.display();
+
+	PageCreator p1( doc.child("Display").first_child().next_sibling() );
+	p1.display();
 
 
 	

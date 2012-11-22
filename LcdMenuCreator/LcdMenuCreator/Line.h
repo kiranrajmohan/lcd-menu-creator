@@ -12,26 +12,23 @@ using namespace pugi;
 
 class Line
 {
+	enum commType{
+		stringComm=0,
+		fCallComm=1,
+		condComm=2
+	};
 
-	struct stringStruct{
-		string s;
-		int pos;
-		stringStruct(){
-			s=string("");
-			pos=0;
-		}
-		stringStruct(string st,int p){
-			s=st;
-			pos=p;
-		}
+	struct commObj{
+		int pos; //starting pos for strings
+		string str,fCalls,cond;
+		vector<commObj> commands; //nested commands for conditions
+
+		commType type;
 	};
 
 
-	int num,
-		length;
-	vector<stringStruct> str;
-	vector<string> fCalls;
-	vector<string> conditions; //closing brackets are always inserted automatically
+	int num,length;
+	vector<commObj> commands;
 	
 	bitset<2> configSelected;
 
@@ -56,6 +53,7 @@ class Line
 	};
 
 	void manageNode(xml_node n);
+	void manageNode(xml_node n,vector<commObj> &commandVector);
 	string generateString( xml_node n);
 public:
 	Line(void);
