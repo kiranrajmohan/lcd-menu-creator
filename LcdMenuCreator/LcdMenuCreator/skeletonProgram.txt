@@ -38,7 +38,7 @@ void navManager( LineStatus &i X)
 		if( <up> )
 		{
 			do{
-				if( currentLine < <MaxLines>-1 ){
+				if( currentLine < <numLines>-1 ){
 					currentLine++;
 				}else{
 					currentLine=0;
@@ -51,7 +51,7 @@ void navManager( LineStatus &i X)
 				if( currentLine > 0 ){
 					currentLine--;
 				}else{
-					currentLine=<MaxLines> - 1;
+					currentLine=<numLines> - 1;
 				}
 			}while( lineCursorList[ currentLine ]==0 && currentLine!=curLineTemp ); //Skip lines without cursor.2nd condition to prevent infinite loops
 		}
@@ -61,28 +61,30 @@ void navManager( LineStatus &i X)
 
 struct LineStatus{
 //for 20* 4 LCD, MaxLines=4;
-	int showCursor,
+	char showCursor,
 		currentLine,
 		currentPosIndex,
-		lineCursorList[ <MaxLines> ]		//populated using <TakesCursor/>
-		lineIndicatorList[ <MaxLines> ],    //populated using <LineIndicator/>
-		lineStart[ <MaxLines> ],			//helps to leave space for line Indicator
+		numLines,							//number of lines to be maintained
+		lineCursorList[ <numLines> ]		//populated using <TakesCursor/>  whether the line takes a cursor
+		lineIndicatorList[ <numLines> ],    //populated using <LineIndicator/> whether the lineIndicator (->) has to be displayed
+		lineStart[ <numLines> ],			//helps to leave space for line Indicator
 		navOn[2],							//navOn[0] -> left/right  navOn[1] -> up/down
 }
 
 /****** RunningDisplay **********/
 	LineStatus i={	off,  //default
 					2, 
-					2,				//lineStart[currentLine]
-					{0,0,1,0},		//populated using <TakesCursor/>
-					{0,0,1,0},
-					{0,0,2,0},		//2 because of lineIndicator (max length is 2)
+					2,
+					3,				//lineStart[currentLine]
+					{0,0,1},		//populated using <TakesCursor/>
+					{0,0,1},
+					{0,0,2},		//2 because of lineIndicator (max length is 2)
 					{0,0}   //nav off because only 1 line
 				};
 	int totalHorizPos=0;  
 	/*
 		if nonzero
-		int horisPosInLine[3]={x,x,x,x},  //total num of positions in each line
+		int horizPosInLine[3]={x,x,x,x},  //total num of positions in each line
 			horizPos[4][<largestNumInLine>]={
 												{y,y,y,y},
 												{y,y	},
@@ -127,15 +129,16 @@ struct LineStatus{
 
 /****** MainMenu **********/
 	LineStatus i={	off,			//default
-					1, 
+					0, 
 					2,				//lineStart[currentLine]
-					{1,1,1,0}, 
-					{1,1,1,0},
-					{2,2,2,0},		//2 because of lineIndicator (max length is 2)
+					3,
+					{1,1,1}, 
+					{1,1,1},
+					{2,2,2},		//2 because of lineIndicator (max length is 2)
 					{0,1},				//horiz nav is 0 bcuz totalHorizPos==0
 				};
 	int totalHorizPos=0;
-	/******* Line 1 ************/
+	/******* Lines ************/
 
 	//static text creation (strings)
 	lcd_gotxy(i.lineStart[0],0);

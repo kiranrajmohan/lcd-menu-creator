@@ -33,6 +33,7 @@ Line::Line(xml_node line,int lineNo)
 {
 	length=0;
 	num=lineNo;
+	configSelected[0]=configSelected[1]=0;
 
 	for( xml_node::iterator it=line.begin(); it!=line.end(); ++it)
 	{

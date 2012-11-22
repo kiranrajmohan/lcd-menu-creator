@@ -10,17 +10,20 @@ class ConfigManager
 {
 	
 public:
-	ConfigManager(void);
-	ConfigManager( xml_node n);
+	ConfigManager( void );
+	ConfigManager( xml_node n );
 
-	string activeLineIndicator,
+	static string activeLineIndicator,
 		   lineIndicator;
-	int maxLines,
-		maxChar;
+
+	static int maxLines,
+			maxChar,
+			maxLineIndicatorLength;
 
 	void display();
 
 	~ConfigManager(void);
+
 };
 
 

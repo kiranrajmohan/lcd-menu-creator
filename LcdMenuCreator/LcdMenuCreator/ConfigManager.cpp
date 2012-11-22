@@ -1,17 +1,25 @@
 #include "ConfigManager.h"
 
-
+int ConfigManager::maxLines=0;
+int ConfigManager::maxChar=0;
+int ConfigManager::maxLineIndicatorLength=0;
+string ConfigManager::activeLineIndicator=string("");
+string ConfigManager::lineIndicator=string("");
 ConfigManager::ConfigManager(void)
 {
 }
 
 ConfigManager::ConfigManager( xml_node n)
 {
-
 	activeLineIndicator=n.child("LineIndicator").attribute("active").value();
 	lineIndicator=n.child("LineIndicator").attribute("default").value();
 	maxLines=n.child("maxLines").text().as_int();
 	maxChar=n.child("maxChar").text().as_int();
+	if( activeLineIndicator.length() >  lineIndicator.length() ){
+		maxLineIndicatorLength=activeLineIndicator.length();
+	}else{
+		maxLineIndicatorLength=lineIndicator.length();
+	}
 }
 
 void ConfigManager::display()

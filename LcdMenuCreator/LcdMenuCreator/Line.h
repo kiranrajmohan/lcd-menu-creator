@@ -30,8 +30,6 @@ class Line
 	int num,length;
 	vector<commObj> commands;
 	
-	bitset<2> configSelected;
-
 	static const map<string,int> componentStringMap;
 	static const map<string,int> configStringMap;
 	
@@ -58,7 +56,8 @@ class Line
 public:
 	Line(void);
 	Line( xml_node line ,int lineNo);
-
+	
+	bitset<2> configSelected;  //TakesCursor,LineIndicator
 	void display();
 	~Line(void);
 
