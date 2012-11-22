@@ -31,7 +31,6 @@ Line::Line(void)
 
 Line::Line(xml_node line,int lineNo)
 {
-	str.push_back( stringStruct() );
 	length=0;
 	num=lineNo;
 
@@ -40,36 +39,46 @@ Line::Line(xml_node line,int lineNo)
 		manageNode( *it );
 	}
 }
-
 void Line::manageNode(xml_node n)
 {
+	manageNode(n,commands); //add commands to the default command vector
+}
+
+void Line::manageNode(xml_node n,vector<commObj> &commandVector) //specify command vector for use with 
+{
 		string s=generateString( n );
+		commObj c;
+		cout<<"\nmanageNode for"<<s<<endl;
 		switch( componentStringMap.find( n.name())->second  )
 		{
 		case String:
-			str.back().s.append( s );
-			str.back().pos=length;
+			c.str=s;
+			c.pos=length;
+			c.type=stringComm;
+			commandVector.push_back( c );
 			length+=s.length();
 			break;
 		case Call:
-			fCalls.push_back(s);
-			str.push_back( stringStruct()  ); //start a new string block
-			conditions.push_back( string("") );
+			c.fCalls=s;
+			c.type=fCallComm;
+			commandVector.push_back( c );
 			break;
 		case DisplayCall:
-			fCalls.push_back(s);
-			str.push_back( stringStruct()  ); //start a new string block
-			conditions.push_back( string("") );
+			c.fCalls=s;
+			c.type=fCallComm;
+			commandVector.push_back( c );
 			length+=atoi( n.attribute("maxLength").value() );
 			break;
 		case UpdateIf:
-			conditions.push_back( s );
-			str.push_back( stringStruct()  ); 
-			fCalls.push_back(string(""));
+			c.cond=s;
+			c.type=condComm;
 			for( xml_node::iterator condChild=n.begin(); condChild!=n.end(); condChild++)
 			{
-				manageNode( *condChild );
+				cout<<"condition nested commands\t ";
+				manageNode( *condChild, c.commands );
+				cout<<" nested vector size= "<<c.commands.size();
 			}
+			commandVector.push_back( c );
 			break;
 		case config:
 			for( xml_node::iterator confChild=n.begin(); confChild!=n.end(); confChild++)
@@ -115,7 +124,6 @@ string Line::generateString( xml_node n)
 			s+=string("if(") + n.attribute("cond").as_string() +string(")\n{");
 			break;
 
-
 			//TODO: complete
 		case config:
 			break;
@@ -126,19 +134,33 @@ string Line::generateString( xml_node n)
 
 void Line::display()
 {
+	struct Local
+	{
+		static void _disp( commObj c ){
+			switch( c.type){
+			case stringComm:
+				cout<<"string="<<c.str<<"@"<<c.pos<<endl;
+				break;
+			case  fCallComm:
+				cout<<"fCall="<<c.fCalls<<endl;
+				break;
+			case condComm:
+				cout<<"condition="<<c.cond<<endl;
+				for(vector<commObj> ::iterator it=c.commands.begin(); it!=c.commands.end(); ++it){
+					cout<<"\t";
+					Local::_disp(*it);
+				}
+
+			}
+		}
+	};
+
 	cout<<"\n------------------line "<<num<<"-------------------------"<< endl<<endl;
-	cout<<"**********str ************"<<str.size()<<endl ;
-	for(vector<stringStruct>::iterator it=str.begin(); it!=str.end(); ++it){
-		cout<<it->s<<"@"<<it->pos<<endl;
+
+	for(vector<commObj> ::iterator it=commands.begin(); it!=commands.end(); ++it){
+		Local::_disp(*it);
 	}
-	cout<<"**********fCalls ************"<<fCalls.size()<<endl ;
-	for(vector<string>::iterator it=fCalls.begin(); it!=fCalls.end(); ++it){
-		cout<<*it<<endl;
-	}
-	cout<<"**********conditions *************"<<conditions.size()<<endl ;
-	for(vector<string>::iterator it=conditions.begin(); it!=conditions.end(); ++it){
-		cout<<*it<<endl;
-	}
+
 	cout<<"configSelected ==>" ;
 	cout<<configSelected.to_string();
 }
