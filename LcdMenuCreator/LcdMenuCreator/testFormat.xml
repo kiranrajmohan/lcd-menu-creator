@@ -93,7 +93,7 @@
 			  </config>
 
 			  <String>Set Time</String>
-			  <OnInput input="enter">
+        <OnInput input="enter">
 				  <Goto>SetTimeMenu</Goto>
 			  </OnInput>
 		  </Line>
@@ -104,7 +104,8 @@
 			  </config>
 
 			  <String>Set Time Table</String>
-			  <OnInput input="enter">
+
+        <OnInput input="enter">
 				  <Goto>SetTableMenu</Goto>
 			  </OnInput>
 		  </Line>
@@ -115,7 +116,9 @@
 			  </config>
 
 			  <String>Pause</String>
-			  <OnInput input="enter">
+        <CursorPos/>
+
+        <OnInput input="enter">
 				  <Goto>PauseMenu</Goto>
 			  </OnInput>
 		  </Line>

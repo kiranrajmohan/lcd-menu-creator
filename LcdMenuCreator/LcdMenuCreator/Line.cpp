@@ -10,6 +10,7 @@ map<string,int> Line::createComponentStringMap()
 	m["config"]=config;
 	m["OnInput"]=OnInput;
 	m["Goto"]=Goto;
+	m["CursorPos"]=CursorPos;
 	return m;
 }
 
@@ -90,6 +91,9 @@ void Line::manageNode(xml_node n,vector<commObj> &commandVector) //specify comma
 				configSelected.flip( num ); //flip the corresponding bit of the bitset
 			}
 			break;
+		case CursorPos:
+			horizPos.push_back( length );
+		
 		}
 }
 
@@ -156,6 +160,8 @@ void Line::display()
 		}
 	};
 
+
+
 	cout<<"\n------------------line "<<num<<"-------------------------"<< endl<<endl;
 
 	for(vector<commObj> ::iterator it=commands.begin(); it!=commands.end(); ++it){
@@ -164,6 +170,13 @@ void Line::display()
 
 	cout<<"configSelected ==>" ;
 	cout<<configSelected.to_string();
+
+	cout<<"\nhorizPos=";
+	for(vector<int> ::iterator it=horizPos.begin(); it!=horizPos.end(); ++it){
+		cout<<*it;
+		cout<<",";
+	}
+	
 }
 
 

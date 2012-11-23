@@ -47,7 +47,8 @@ class Line
 		UpdateIf,
 		config,
 		OnInput,
-		Goto
+		Goto,
+		CursorPos
 	};
 
 	void manageNode(xml_node n);
@@ -58,6 +59,9 @@ public:
 	Line( xml_node line ,int lineNo);
 	
 	bitset<2> configSelected;  //TakesCursor,LineIndicator
+	vector<int> horizPos;
+
+
 	void display();
 	~Line(void);
 

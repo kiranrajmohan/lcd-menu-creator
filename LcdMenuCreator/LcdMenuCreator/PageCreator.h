@@ -25,6 +25,13 @@ class PageCreator
 						lineStart;
 	} lineStatus;
 
+	struct HorizPosStruct{
+		int totalHorizPos, //total of all lines
+			maxHorizPos,
+			linesWithHorizPos; //highest of horizPos of all lines
+		vector< vector<int> > horizPos;
+	} horizPosStruct;
+
 	string lineStatusGenerator();
 
 public:
