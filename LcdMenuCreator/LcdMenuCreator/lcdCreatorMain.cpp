@@ -24,12 +24,20 @@ int main()
 
 	ConfigManager config( doc.child("Config") );
 	config.display();
+	
+	xml_node displayNode=doc.child("Display");
 
-	PageCreator p0( doc.child("Display").first_child() );
-	p0.display();
+	vector<PageCreator> p;
 
-	PageCreator p1( doc.child("Display").first_child().next_sibling() );
-	p1.display();
+	for( xml_node::iterator it=displayNode.begin() ; it!=displayNode.end(); ++it)
+	{
+		p.push_back( PageCreator( *it ) );
+	}
+	//PageCreator p0( doc.child("Display").first_child() );
+	//p0.display();
+
+	//PageCreator p1( doc.child("Display").first_child().next_sibling() );
+	//p1.display();
 
 
 	

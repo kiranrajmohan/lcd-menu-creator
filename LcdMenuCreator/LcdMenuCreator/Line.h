@@ -12,10 +12,12 @@ using namespace pugi;
 
 class Line
 {
+public:
 	enum commType{
 		stringComm=0,
 		fCallComm=1,
-		condComm=2
+		condComm=2,
+		inputComm=3,
 	};
 
 	struct commObj{
@@ -25,10 +27,10 @@ class Line
 
 		commType type;
 	};
-
-
-	int num,length;
 	vector<commObj> commands;
+	int num,length;
+
+private:
 	
 	static const map<string,int> componentStringMap;
 	static const map<string,int> configStringMap;
@@ -54,6 +56,8 @@ class Line
 	void manageNode(xml_node n);
 	void manageNode(xml_node n,vector<commObj> &commandVector);
 	string generateString( xml_node n);
+
+	friend class PageCreator;
 public:
 	Line(void);
 	Line( xml_node line ,int lineNo);

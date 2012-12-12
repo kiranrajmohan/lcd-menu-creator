@@ -1,8 +1,9 @@
-void printLineIndicator(Li	neStatus &i)
+void printLineIndicator(LineStatus &i)
 {
 	lcd_gotoxy(0,i.currentLine);
 	if( i.lineList[currentLine] == 1 ){
 		lcd_puts( <LineIndicator> ); //take from 
+	}
 }
 
 void navManager( LineStatus &i X)
@@ -119,10 +120,14 @@ struct LineStatus{
 		}
 
 		//Input managers
-		if( <enterPressed> )
+		
+		if( i.currentLine==2 )
 		{
-			LoadMenu(MainMenu); //use enums for the pageNames
-			return;
+			if( <enterPressed> )
+			{
+				LoadMenu(MainMenu); //use enums for the pageNames
+				return;
+			}
 		}
 	}
 /***************************************************/
@@ -150,15 +155,7 @@ struct LineStatus{
 
 	while(1)
 	{
-		//function calls. 
-		if(!mGlobals.newNextRing)
-		{	
-			printDay( nextRing.day , 6, 0 );
-			printTime( nextRing.h, nextRing.m, nextRing.s, 10, 0);
-			resetNewNextRing();
-		}
-		printDay( currentTime.day , 6, 1 )
-		printTime( currentTime.h, currentTime.min, currentTime.s, 10, 1)
+	
 	
 		//Nav manager
 		navManager(i);

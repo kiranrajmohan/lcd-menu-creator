@@ -11,6 +11,7 @@ using namespace pugi;
 class PageCreator
 {
 	vector<Line> lines;
+	vector<Line> pageInputs;
 	string name;
 	int num;
 
@@ -26,19 +27,26 @@ class PageCreator
 	} lineStatus;
 
 	struct HorizPosStruct{
-		int totalHorizPos, //total of all lines
+		unsigned int totalHorizPos, //total of all lines
 			maxHorizPos,
 			linesWithHorizPos; //highest of horizPos of all lines
 		vector< vector<int> > horizPos;
 	} horizPosStruct;
 
 	string lineStatusGenerator();
+	string staticDisplayGenerator();
+	string _updateLoopGenerator_conditions(vector<Line::commObj> &com);
+	string _updateLoopGenerator_inputs(vector<Line::commObj> &com);
+	string updateLoopGenerator();
 
 public:
 	PageCreator(void);
 	PageCreator(xml_node n);
 
+	string pageFunction;
+
 	void display();
 	~PageCreator(void);
+	
 };
 

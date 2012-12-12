@@ -68,6 +68,7 @@
 
 			  <UpdateIf cond="!mGlobals.newNextRing">
           <DisplayCall maxLength="3">printDay( nextRing.day , <Pos/>, <Line/> )</DisplayCall>
+          <String> </String>
           <DisplayCall maxLength="8">printTime( nextRing.h, nextRing.m, nextRing.s, <Pos/>, <Line/>)</DisplayCall>
 				  <Call>resetNewNextRing()</Call>
         </UpdateIf>
@@ -116,7 +117,6 @@
 			  </config>
 
 			  <String>Pause</String>
-        <CursorPos/>
 
         <OnInput input="enter">
 				  <Goto>PauseMenu</Goto>
@@ -132,18 +132,27 @@
 		  <Line>
 			  <String>SetTimeMenu</String>
 		  </Line>
+      <OnInput input="back">
+        <Goto>MainMenu</Goto>
+      </OnInput>
 	  </Page>
 
 	  <Page name="SetTableMenu">
 		  <Line>
 			  <String>SetTableMenu</String>
 		  </Line>
+      <OnInput input="back">
+        <Goto>MainMenu</Goto>
+      </OnInput>
 	  </Page>
 
 	  <Page name="PauseMenu">
 		  <Line>
 			  <String>PauseMenu</String>
 		  </Line>
+      <OnInput input="back">
+        <Goto>MainMenu</Goto>
+      </OnInput>
 	  </Page>
 
 

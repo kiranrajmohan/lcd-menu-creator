@@ -50,7 +50,7 @@ void Line::manageNode(xml_node n,vector<commObj> &commandVector) //specify comma
 {
 		string s=generateString( n );
 		commObj c;
-		cout<<"\nmanageNode for"<<s<<endl;
+		//cout<<"\nmanageNode for"<<s<<endl;
 		switch( componentStringMap.find( n.name())->second  )
 		{
 		case String:
@@ -76,9 +76,7 @@ void Line::manageNode(xml_node n,vector<commObj> &commandVector) //specify comma
 			c.type=condComm;
 			for( xml_node::iterator condChild=n.begin(); condChild!=n.end(); condChild++)
 			{
-				cout<<"condition nested commands\t ";
 				manageNode( *condChild, c.commands );
-				cout<<" nested vector size= "<<c.commands.size();
 			}
 			commandVector.push_back( c );
 			break;
@@ -91,10 +89,26 @@ void Line::manageNode(xml_node n,vector<commObj> &commandVector) //specify comma
 				configSelected.flip( num ); //flip the corresponding bit of the bitset
 			}
 			break;
+		
+		case OnInput:
+			c.cond=s;
+			c.type=inputComm;
+			for( xml_node::iterator condChild=n.begin(); condChild!=n.end(); condChild++)
+			{
+				manageNode( *condChild, c.commands );
+			}
+			commandVector.push_back( c );
+			break;
+		case Goto:
+			c.type=fCallComm;
+			c.fCalls=s;
+			commandVector.push_back( c );
+			break;
 		case CursorPos:
 			horizPos.push_back( length );
-		
+			break;
 		}
+
 }
 
 string Line::generateString( xml_node n)
@@ -129,7 +143,14 @@ string Line::generateString( xml_node n)
 			s+=string("if(") + n.attribute("cond").as_string() +string(")\n{");
 			break;
 
-			//TODO: complete
+		case OnInput:
+			s.append("if(isPressed(").append( string(n.attribute("input").value()) ).append(")){");
+			break;
+
+		case Goto:
+			s.append("\tLoadMenu(").append( n.child_value() ).append(");\n\treturn;");
+			break;
+
 		case config:
 			break;
 		}
@@ -144,15 +165,15 @@ void Line::display()
 		static void _disp( commObj c ){
 			switch( c.type){
 			case stringComm:
-				cout<<"string="<<c.str<<"@"<<c.pos<<endl;
+				//cout<<"string="<<c.str<<"@"<<c.pos<<endl;
 				break;
 			case  fCallComm:
-				cout<<"fCall="<<c.fCalls<<endl;
+				//cout<<"fCall="<<c.fCalls<<endl;
 				break;
 			case condComm:
-				cout<<"condition="<<c.cond<<endl;
+				//cout<<"condition="<<c.cond<<endl;
 				for(vector<commObj> ::iterator it=c.commands.begin(); it!=c.commands.end(); ++it){
-					cout<<"\t";
+					//cout<<"\t";
 					Local::_disp(*it);
 				}
 
@@ -162,19 +183,19 @@ void Line::display()
 
 
 
-	cout<<"\n------------------line "<<num<<"-------------------------"<< endl<<endl;
+	//cout<<"\n------------------line "<<num<<"-------------------------"<< endl<<endl;
 
 	for(vector<commObj> ::iterator it=commands.begin(); it!=commands.end(); ++it){
 		Local::_disp(*it);
 	}
 
-	cout<<"configSelected ==>" ;
-	cout<<configSelected.to_string();
+	//cout<<"configSelected ==>" ;
+	//cout<<configSelected.to_string();
 
-	cout<<"\nhorizPos=";
+	//cout<<"\nhorizPos=";
 	for(vector<int> ::iterator it=horizPos.begin(); it!=horizPos.end(); ++it){
-		cout<<*it;
-		cout<<",";
+		//cout<<*it;
+		//cout<<",";
 	}
 	
 }
