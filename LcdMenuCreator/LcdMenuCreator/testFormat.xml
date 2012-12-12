@@ -1,6 +1,6 @@
 
   <Inputs>
-	  <Button name="up">
+	  <Button name="up" action="up">
 		  <P>UP_PIN</P>
 		  <DDR>UP_DDR</DDR>
 		  <PIN>UP_PORT</PIN>
@@ -8,7 +8,7 @@
       <Active>low</Active>
 	  </Button>
 
-	  <Button name="down">
+	  <Button name="down"  action="down">
 		  <P>DOWN_PIN</P>
 		  <DDR>DOWN_DDR</DDR>
 		  <PIN>DOWN_PORT</PIN>
@@ -16,7 +16,7 @@
       <Active>low</Active>
 	  </Button>
 
-	  <Button name="left">
+	  <Button name="left"  action="left">
 		  <P>LEFT_PIN</P>
 		  <DDR>LFET_DDR</DDR>
 		  <PIN>LEFT_PORT</PIN>
@@ -24,7 +24,7 @@
       <Active>low</Active>
 	  </Button>
 
-	  <Button name="right">
+	  <Button name="right"  action="right">
 		  <P>RIGHT_PIN</P>
 		  <DDR>RIGHT_DDR</DDR>
 		  <PIN>RIGHT_PORT</PIN>
@@ -32,7 +32,7 @@
       <Active>low</Active>
 	  </Button>
 
-	  <Button name="enter">
+	  <Button name="enter"  action="enter">
 		  <P>ENTER_PIN</P>
 		  <DDR>ENTER_DDR</DDR>
 		  <PIN>ENTER_PORT</PIN>
@@ -40,7 +40,7 @@
       <Active>low</Active>
 	  </Button>
 
-	  <Button name="back">
+	  <Button name="back"  action="back">
 		  <P>ENTER_PIN</P>
 		  <DDR>ENTER_DDR</DDR>
 		  <PIN>ENTER_PORT</PIN>

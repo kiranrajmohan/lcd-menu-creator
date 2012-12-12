@@ -16,19 +16,21 @@ private:
 				P,
 				DDR,
 				PIN,
-				PORT;
+				PORT,
+				baction;
 	activeState active;
 
 public:
 	hw_Button(void);
-	hw_Button( string _name, string p, string ddr, string pin, string port, int _active);
+	hw_Button( string _name, string p, string ddr, string pin, string port, int _active,string _action="general" );
 	hw_Button( xml_node button );
 
 	//setters
-	void assign( string _name, string p, string ddr, string pin, string port, int _active);
+	void assign( string _name, string p, string ddr, string pin, string port, int _active, string _action="general" );
 
 	//getters
 	string name();
+	string action();
 
 	//generators
 	string isPressedChecker();

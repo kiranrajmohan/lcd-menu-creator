@@ -11,6 +11,7 @@ class hw_Inputs
 
 public:
 	map<string,hw_Button> inputButtons;
+	map<string,hw_Button> actionButtons;
 
 	hw_Inputs(void);
 	hw_Inputs( xml_node );

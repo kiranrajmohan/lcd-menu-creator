@@ -144,9 +144,11 @@ string Line::generateString( xml_node n)
 			break;
 
 		case OnInput:
-			s.append("if(isPressed(").append( string(n.attribute("input").value()) ).append(")){");
-			break;
-
+			{
+				hw_Button b=inputsPtr->inputButtons[ string(n.attribute("input").value()) ];
+				s.append("if( ").append( b.isPressedChecker() ).append("){");
+				break;
+			}
 		case Goto:
 			s.append("\tLoadMenu(").append( n.child_value() ).append(");\n\treturn;");
 			break;

@@ -8,9 +8,12 @@
 #include "Line.h"
 #include "ConfigManager.h"
 #include "PageCreator.h"
+#include "skeletonProcessor.h"
 
 using namespace std;
 using namespace pugi;
+
+hw_Inputs *inputsPtr;
 
 int main()
 {
@@ -18,14 +21,18 @@ int main()
 	pugi::xml_parse_result result = doc.load_file("testFormat.xml",parse_ws_pcdata_single);
 	
 	std::cout << "Load result: " << result.description() << endl;
-	
+
+	hw_Inputs inputs( doc.child("Inputs") );
+	inputsPtr=&inputs;
 	//hw_Inputs inputs( doc.child("Inputs") );
-	//inputs.display();
+	inputsPtr->display();
 
 	ConfigManager config( doc.child("Config") );
 	config.display();
 	
 	xml_node displayNode=doc.child("Display");
+
+	skeletonProcessor sP;
 
 	vector<PageCreator> p;
 
@@ -38,8 +45,6 @@ int main()
 
 	//PageCreator p1( doc.child("Display").first_child().next_sibling() );
 	//p1.display();
-
-
 	
 	int simply;
 	cin>>simply;

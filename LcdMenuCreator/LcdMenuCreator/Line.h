@@ -6,9 +6,12 @@
 #include <map>
 #include <bitset>
 
+#include "hw_Inputs.h"
+
 using namespace std;
 using namespace pugi;
 
+extern hw_Inputs *inputsPtr;
 
 class Line
 {
