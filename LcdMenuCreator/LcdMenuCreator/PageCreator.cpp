@@ -10,7 +10,7 @@ PageCreator::PageCreator(void)
 PageCreator::PageCreator(xml_node n)
 {
 	name=string( n.attribute("name").as_string() );
-	num=0;
+	numLines=0;
 	lineStatus.navOn[0]=lineStatus.navOn[1]=0;
 	horizPosStruct.totalHorizPos=0;
 	horizPosStruct.maxHorizPos=0;
@@ -18,7 +18,7 @@ PageCreator::PageCreator(xml_node n)
 	for( xml_node::iterator it=n.begin(); it!=n.end(); ++it)
 	{
 		if( string(it->name())==string("Line") ){
-			Line l=Line( *it, num);
+			Line l=Line( *it, numLines);
 			lineStatus.lineCursorList.push_back( l.configSelected[0] ); //use TakesCursor
 			lineStatus.lineIndicatorList.push_back( l.configSelected[1] ); //use LineIndicator
 			lineStatus.lineStart.push_back( l.configSelected[1] *  ConfigManager::maxLineIndicatorLength ); //will be zero if lineIndicator is not set for the line ( l.configSelected[1] )
@@ -33,11 +33,11 @@ PageCreator::PageCreator(xml_node n)
 					horizPosStruct.maxHorizPos=l.horizPos.size() ;
 				}
 				horizPosStruct.horizPos.push_back( l.horizPos );
-				lineStatus.lineStart[num]=l.horizPos[0]; //if there are CursorPos, ignore default one and take the 1st explicit one
+				lineStatus.lineStart[numLines]=l.horizPos[0]; //if there are CursorPos, ignore default one and take the 1st explicit one
 				horizPosStruct.linesWithHorizPos++;
 			}
 			lines.push_back( l );
-			num++;
+			numLines++;
 		}else if( string(it->name())==string("OnInput") ){
 			Line l;
 			l.manageNode( *it); //update with only the OnInput Node
@@ -57,7 +57,7 @@ string PageCreator::lineStatusGenerator(){
 
 	s.append("0,");
 
-	vector<int>::iterator it	= find( lineStatus.lineCursorList.begin(), lineStatus.lineCursorList.end(), 1); //first line that takes a cursor
+	vector<unsigned int>::iterator it	= find( lineStatus.lineCursorList.begin(), lineStatus.lineCursorList.end(), 1); //first line that takes a cursor
 	lineStatus.currentLine		= it - lineStatus.lineCursorList.begin(); //subtract pointers to find index
 	if( lineStatus.currentLine > lineStatus.lineStart.size()-1 ){ //no line takes cursor
 		lineStatus.currentLine=0; //keep the first line to take cursor
@@ -209,7 +209,7 @@ string PageCreator::updateLoopGenerator(){
 
 void PageCreator::display()
 {
-	cout<<" Number of lines ="<<num;
+	cout<<" Number of lines ="<<numLines;
 	for( vector<Line>::iterator it=lines.begin() ; it!=lines.end(); ++it)
 	{
 		it->display();

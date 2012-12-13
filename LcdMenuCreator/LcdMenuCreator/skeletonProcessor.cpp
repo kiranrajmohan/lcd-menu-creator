@@ -45,6 +45,7 @@ skeletonProcessor::skeletonProcessor(void)
 	}
 
 	cout<<"\nprocessed =>\n"<<processed;
+	inf.close();
 }
 
 

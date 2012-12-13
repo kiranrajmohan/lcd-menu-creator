@@ -10,20 +10,17 @@ using namespace pugi;
 
 class PageCreator
 {
-	vector<Line> lines;
-	vector<Line> pageInputs;
-	string name;
-	int num;
+	
 
 	struct LineStatusStruct{
-		int	showCursor,
-				currentLine,
-				currentPosIndex,
-				numLines,
-				navOn[2];
-		vector<int>	lineCursorList,
-						lineIndicatorList,
-						lineStart;
+		unsigned int	showCursor,
+						currentLine,
+						currentPosIndex,
+						numLines,
+						navOn[2];
+		vector<unsigned int>	lineCursorList,
+								lineIndicatorList,
+								lineStart;
 	} lineStatus;
 
 	struct HorizPosStruct{
@@ -42,6 +39,11 @@ class PageCreator
 public:
 	PageCreator(void);
 	PageCreator(xml_node n);
+
+	vector<Line> lines;
+	vector<Line> pageInputs;
+	string name;
+	int numLines;
 
 	string pageFunction;
 

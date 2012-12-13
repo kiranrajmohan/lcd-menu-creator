@@ -1,7 +1,7 @@
 #include "pugixml.hpp"
 #include <iostream>
 #include <vector>
-
+#include <fstream>
 
 #include "hw_Button.h"
 #include "hw_Inputs.h"
@@ -36,15 +36,42 @@ int main()
 
 	vector<PageCreator> p;
 
+	string finalCode;
+
+
+	int maxLines=0;
 	for( xml_node::iterator it=displayNode.begin() ; it!=displayNode.end(); ++it)
 	{
 		p.push_back( PageCreator( *it ) );
+		if(p.back().numLines>maxLines){
+			maxLines=p.back().numLines;
+		}
 	}
-	//PageCreator p0( doc.child("Display").first_child() );
-	//p0.display();
+	string maxL=to_string( long double( maxLines ) );
+	finalCode.append("struct LineStatus{\n  \n\
+		char showCursor,					\n\
+		currentLine,						\n\
+		currentPosIndex,					\n\
+		numLines,							\n\
+		lineCursorList[").append( maxL ).append("],\n")
+		.append("lineIndicatorList[").append(maxL).append("],\n")
+		.append("lineStart[").append(maxL).append("],\n")
+		.append("navOn[2] \n};\n");
 
-	//PageCreator p1( doc.child("Display").first_child().next_sibling() );
-	//p1.display();
+	
+	finalCode+=sP.processed;
+
+	finalCode+="\n//-----------------Page function------------------\n";
+	for( vector<PageCreator>::iterator it=p.begin() ; it!=p.end(); ++it)
+	{
+		finalCode+="\n//----------------"+ it->name + "---------------------------\n";
+		finalCode+=it->pageFunction;
+	}
+	finalCode+="\n//-----------------Page functions over------------------\n";
+
+	ofstream of("createdCode.cpp");
+	of<<finalCode;
+	of.close();
 	
 	int simply;
 	cin>>simply;

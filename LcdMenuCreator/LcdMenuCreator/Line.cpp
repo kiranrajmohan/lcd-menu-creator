@@ -150,7 +150,7 @@ string Line::generateString( xml_node n)
 				break;
 			}
 		case Goto:
-			s.append("\tLoadMenu(").append( n.child_value() ).append(");\n\treturn;");
+			s.append("\tLoadMenu( generatedMenu_").append( n.child_value() ).append(" );\n\treturn;");
 			break;
 
 		case config:

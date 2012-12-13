@@ -8,3 +8,5 @@
 <CursorPos/>  <- place at any point where the cursor can be moved to
 If placed in a line, default positions are  ignored & have to be explicitly specified using this placeholder
 If asbsent in aline but has the TakesCursor token, then the default position of start of line is considered
+
+have an option to alllow up/down motion to move to the vetically nearest horizPos instead of the first pos
